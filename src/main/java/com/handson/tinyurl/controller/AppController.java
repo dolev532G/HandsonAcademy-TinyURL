@@ -1,15 +1,25 @@
 package com.handson.tinyurl.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.handson.tinyurl.service.Redis;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AppController {
 
-    @RequestMapping(value = "/hello", method = RequestMethod.GET)
-    public String getClicks() {
-        return "hello";
+    @Autowired
+    Redis redis;
+
+    @RequestMapping(value = "/getkey", method = RequestMethod.GET)
+    public String GetKay(@RequestParam String key) {
+        return redis.get(key).toString();
     }
+
+    @RequestMapping(value = "/setkey", method = RequestMethod.GET)
+    public Boolean SetKeyVar(@RequestParam String key , @RequestParam String var) {
+        return redis.set(key,var);
+    }
+
 }
+
